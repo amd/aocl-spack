@@ -1,0 +1,107 @@
+Spack Overview
+
+Spack ( https://spack.io/ ) is a package manager for supercomputers, Linux, and macOS.
+It makes installing scientific software easy. With Spack, user can build a package with multiple versions, configurations, platforms, and compilers, and all these builds can coexist on the same machine.
+
+Install Spack:
+For Spack prerequisites, installation and adding path to user shell environment, please refer below sections under https://spack.readthedocs.io/en/latest/getting_started.html link:
+. Prerequisites
+. Installation
+. Add Spack to the Shell
+Note: AOCL packages are tested using Spack release version - v0.12 
+ 
+Environment Modules:
+In order to use Spack.s generated module files, user need to install environment-modules
+$ spack install environment-modules
+$ spack -i environment-modules
+$ source init/bash
+
+Install AOCL packages:
+Prerequisites
+Recommended compiler version for AOCL package are AOCC-2.0 and GCC-9.2.0
+Steps for adding AOCC-2.0 compiler to Spack:
+. Download AOCC-2.0 binaries from https://developer.amd.com/amd-aocc/
+. spack compiler find <AOCC install directory path>
+
+Steps for adding GCC-9.2.0 compiler to Spack:
+$ spack install --no-checksum gcc@9.2.0
+$ gcc_9_2_0=$(spack location --install-dir gcc@9.2.0)
+$ spack compiler find ${gcc_9_2_0}
+AOCL tar package spack_recipe_aocl_2.0.0.tar, which contains Blis, FFTW, libFLAME libraries recipe along with spack_set_env.sh script (setup the environment required for AOCL package), needs to be extracted from the same directory where spack is installed. 
+$ cd ${SPACK_ROOT}
+Where SPACK_ROOT value is /path/to/spack
+$ cd ../
+$ cp -v <Download Path>/spack_recipe_aocl_2.0.0.tar .
+Extract spack_recipe_aocl_2.0.0.tar tar package 
+$ tar -xf spack_recipe_aocl_2.0.0.tar
+
+Adding repo with namespace amd:
+We use a separate package repository for the installing AOCL packages. Package repositories allow user to separate sets of packages that take precedence over one another. We will use the amd repo that ships with spack_recipe_aocl_2.0.0.tar tar package to avoid breaking the builtin Spack packages.
+$ spack repo add $SPACK_ROOT/var/spack/repos/amd/
+ 
+
+Semi automation approach:
+Script spack_set_env.sh which is part spack deliverable tar package will setup the environment required for AOCL package installation.
+spack_set_env.sh  script will perform below said activities:
+. Lists Spack prerequisites 
+. Downloads Spack release version - v0.12
+. Install and configure environment-modules
+. Extracts spack deliverable tar package package
+. Adding repo with namespace "amd"
+Usage:
+If spack is not installed:
+$ bash spack_set_env.sh -t "<spack deliverable tar package path>"
+If spack is already installed:
+$ bash spack_set_env.sh -t "<spack deliverable tar package path>" -s "</path/to/spack>"
+
+
+
+To Install blis package:
+To install amd blis latest version 
+$ spack install amd.blis
+ 
+To verify contents installed contents go blis package install-directory
+$ spack spec amd.blis
+ 
+$ spack cd -i amd.blis
+ 
+Below command will provide blis package info and supported versions
+$ spack info blis
+To install other versions of amd blis package use @ (supported versions of blis are 2.0, 1.3, 1.2 and 1.0):
+$ spack install -v amd.blis@1.3 
+To build and install Blis which will support multithreading using AOCC compiler:
+$ spack install amd.blis@1.2 threads=openmp %clang@8.0.0 
+ 
+
+To build and install Blis which will support multithreading using AOCC compiler:
+$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
+ 
+
+To list all versions of blis along with its namespace and hash value
+$ spack find -lN amd.blis
+ 
+
+Command to list "hash", "version", "arch", "compiler", "namespace" and "parameters" of the installed blis package 
+
+$ spack find -vlN amd.blis
+ 
+
+To use spack installed packages:
+User can either call spack load <package> or export the path of installed package
+ 
+
+To uninstall Blis package:
+To uninstall Blis based out of different version, namespace and hash values
+$ spack uninstall amd.blis@2.0
+$ spack uninstall amd.blis/43reafx
+$ spack uninstall builtin.blis@0.6.0
+
+ 
+
+To switch to builtin namespace:
+spack repo remove amd
+spack repo add </path/to/spack>/var/spack/repos/builtin
+ 
+
+Note: AOCL packages based out of AMD namespaces and community libraries can exist together under same spack directory.
+
