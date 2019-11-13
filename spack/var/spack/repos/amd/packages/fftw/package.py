@@ -25,10 +25,10 @@ class Fftw(AutotoolsPackage):
 
     homepage = "https://github.com/amd/amd-fftw"
     url      = "https://github.com/amd/amd-fftw/archive/2.0.tar.gz"
+    git      = "https://github.com/amd/amd-fftw.git"
 
-    maintainers = ['pradeeptrgit']
 
-    version('2.0', '20fdabbf98f780623fb5fa90bca5cbf4')
+    version('2.0', tag='2.0')
 
     variant(
         'float', default=True,

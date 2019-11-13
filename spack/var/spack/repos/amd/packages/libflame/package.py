@@ -33,10 +33,9 @@ class Libflame(AutotoolsPackage):
     url      = "https://github.com/amd/libflame/archive/2.0.tar.gz"
     git      = "https://github.com/amd/libflame.git"
 
-    version('master', branch='master')
-    version('2.0',   sha256='c80517b455df6763341f67654a6bda909f256a4927ffe9b4f0a2daed487d3739')
-    version('1.3',   sha256='6821142bb877e5f92589f7d23e445519bb74922aef95486b27b90954032d80ef')
-    version('1.0',   sha256='11e7b21b59849416ac372ef2c2b38beb73e62bead85d0ae3ffd0f4f1f6f760cf')
+    version('2.0', tag='2.0')
+    version('1.3', tag='1.3')
+    version('1.0', tag='1.0')
 
     depends_on('blis')
     phases = ['configure', 'build', 'install']

@@ -1,14 +1,5 @@
-amd@gcc-diesel2:~/TO_AOCL_TEAM/SPACK_SRC/spack$ git log -2
-commit e727e79b73f558ca6ece8d221137593b03e21ddd
-Author: Chris Green <greenc@fnal.gov>
-Date:   Wed Sep 11 05:32:49 2019 -0500
+commit d62dc366ef90681fac37895e614a41d719675c44 (HEAD -> releases/v0.12, origin/releases/v0.12)
+Author: Todd Gamblin <tgamblin@llnl.gov>
+Date:   Sun Jan 13 15:28:07 2019 -0800
 
-    jsoncpp: new versions, support cxxstd variant. (#12780)
-
-commit e3d06dc0d793ab72e5ac722c228af1f9bd2c3e59
-Author: Owen Solberg <odoublewen@users.noreply.github.com>
-Date:   Tue Sep 10 19:33:33 2019 -0700
-
-    create package popt (#12783)
-amd@gcc-diesel2:~/TO_AOCL_TEAM/SPACK_SRC/spack$
-
+    bugfix: bring in .travis.yml from develop

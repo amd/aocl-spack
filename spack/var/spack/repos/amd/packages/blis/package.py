@@ -23,10 +23,10 @@ class Blis(Package):
     url      = "https://github.com/amd/blis/archive/2.0.tar.gz"
     git      = "https://github.com/amd/blis.git"
 
-    version('2.0', sha256='7469680ce955f39d8d6bb7f70d2cc854222e5ef92a39488e77421300a65fad83')
-    version('1.3',   sha256='6ce42054d63564f57a7276e7c63f3d01ed96a64908b484a99e68309acc968745')
-    version('1.2',   sha256='b2e7d055c37faa5bfda5a1be63a35d1e612108a9809d7726cedbdd4722d76b1d')
-    version('1.0',   sha256='b8b86b1cc0c61ab5318102985dc3ccb34028ea2a110a354ea4e02e932fbaeeb9')
+    version('2.0', tag='2.0')
+    version('1.3', tag='1.3')
+    version('1.2', tag='1.2')
+    version('1.0', tag='1.0')
 
     variant(
         'threads', default='none',

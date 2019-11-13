@@ -79,12 +79,13 @@ WORKSPACE=${WORKSPACE:-$PWD}
 execute_and_check "rm -rf ${WORKSPACE}/command_executed.txt"
 spack_path=""
 #}
+
 #{ getopts - For option processing
 while getopts :t:s:a:c: opt; do
   case $opt in
     t)
-      AOCL_tar_path="${OPTARG}"
-      echo "AOCL tar path is - ${AOCL_tar_path}"
+      spack_recipes_tar_path="${OPTARG}"
+      echo "AOCL tar path is - ${spack_recipes_tar_path}"
     ;;
     s)
       spack_path="${OPTARG}"
@@ -92,13 +93,27 @@ while getopts :t:s:a:c: opt; do
     ;;
     h)
       help="${OPTARG}"
-      echo "Usage: spack_set_env.sh -t <Absolute path of AOCL tar package path> -s <Absolute path of Spack path if it is already installed>"
+      echo "Usage: spack_set_env.sh -t <Path of AOCL tar package path> -s <Path of Spack path if it is already installed>"
     ;;
     *)
       echo "Usage: spack_set_env.sh -t <AOCL tar package path> -s <Spack path if it is already installed>"
     ;;
   esac
 done
+#}
+
+#{ Option processing validation
+if [ -z "${spack_recipes_tar_path}" ]; then
+	execute_and_check "echo \"Path of AOCL Spack recipe tar file is not given\""
+	echo "Usage: spack_set_env.sh -t <AOCL tar package path> -s <Spack path if it is already installed>"
+	exit 1
+else
+	if [[ "$spack_recipes_tar_path" = /* ]]; then
+		spack_recipes_tar_path=${spack_recipes_tar_path}
+	else
+		spack_recipes_tar_path=${PWD}/${spack_recipes_tar_path}
+	fi
+fi
 #}
 
 if [ -z "${spack_path}" ]; then
@@ -109,7 +124,7 @@ if [ -z "${spack_path}" ]; then
 		execute_and_check "git clone https://github.com/spack/spack.git"
 		execute_and_check "cd spack"
 		export SPACK_ROOT=$PWD
-		execute_and_check "git reset --hard e727e79b73f558ca6ece8d221137593b03e21ddd"
+		execute_and_check "git checkout releases/v0.12"
 		execute_and_check "cd ../"
 		spack_base_path=$PWD
 	fi
@@ -117,24 +132,28 @@ if [ -z "${spack_path}" ]; then
 else
 	export SPACK_ROOT=${spack_path}
 	spack_base_path=$(dirname ${spack_path})
+	execute_and_check "echo \"We are using existing spack tool, kindly note, AOCL spack recipes are tested with v0.12 release version\""
 fi
 
 source ${SPACK_ROOT}/share/spack/setup-env.sh
 spack_cmd="${spack_base_path}/spack/bin/spack"
 eval "export PATH=${spack_cmd}:$PATH"
 
-${spack_cmd} install --no-checksum gcc@9.2.0
+execute_and_check "echo \"compiler gcc compiler for AOCL is GCC-9.2.0, so installing...\""
+execute_and_check "${spack_cmd} install --no-checksum gcc@9.2.0"
 gcc_9_2_0=$(${spack_cmd} location --install-dir gcc@9.2.0)
-${spack_cmd} compiler find ${gcc_9_2_0}
+execute_and_check "${spack_cmd} compiler find ${gcc_9_2_0}"
 
-${spack_cmd} install environment-modules
+execute_and_check "echo \"For Spack load <product> feature, environment-modules are required, so installing...\""
+execute_and_check "${spack_cmd} install environment-modules"
 module_path=$(${spack_cmd} location --install-dir environment-modules)
-cd ${module_path}
-source init/bash
+execute_and_check "cd ${module_path}/Modules"
+execute_and_check "source init/bash"
 
-echo "spack root value is - ${spack_base_path}"
+execute_and_check "echo \"spack root value is - ${spack_base_path}\""
 execute_and_check "cd ${spack_base_path}"
-execute_and_check "cp -v ${AOCL_tar_path} ${spack_base_path}"
-execute_and_check "tar -xvf ${AOCL_tar_path}"
+execute_and_check "cp -v ${spack_recipes_tar_path} ${spack_base_path}"
+execute_and_check "echo \"Extracting ${spack_recipes_tar_path}...\""
+execute_and_check "tar -xvf ${spack_recipes_tar_path}"
 execute_and_check "${spack_cmd} repo add ${SPACK_ROOT}/var/spack/repos/amd/"
 # vim: foldmethod=marker foldmarker=#{,#}
