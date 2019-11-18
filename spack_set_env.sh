@@ -93,10 +93,10 @@ while getopts :t:s:a:c: opt; do
     ;;
     h)
       help="${OPTARG}"
-      echo "Usage: spack_set_env.sh -t <Path of AOCL tar package path> -s <Path of Spack path if it is already installed>"
+      echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Path of Spack path if it is already installed>"
     ;;
     *)
-      echo "Usage: spack_set_env.sh -t <AOCL tar package path> -s <Spack path if it is already installed>"
+      echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Spack path if it is already installed>"
     ;;
   esac
 done
@@ -105,7 +105,7 @@ done
 #{ Option processing validation
 if [ -z "${spack_recipes_tar_path}" ]; then
 	execute_and_check "echo \"Path of AOCL Spack recipe tar file is not given\""
-	echo "Usage: spack_set_env.sh -t <AOCL tar package path> -s <Spack path if it is already installed>"
+	echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Spack path if it is already installed>"
 	exit 1
 else
 	if [[ "$spack_recipes_tar_path" = /* ]]; then
@@ -141,7 +141,7 @@ eval "export PATH=${spack_cmd}:$PATH"
 
 execute_and_check "echo \"gcc compiler for AOCL is GCC-9.2.0\""
 execute_and_check "echo \"check whether GCC-9.2.0 is installed or not\""
-spack_gcc_check=$({spack_cmd} find gcc@9.2.0)
+spack_gcc_check=$(${spack_cmd} find gcc@9.2.0)
 string_to_look="No package matches the query: gcc@9.2.0"
 if [[ ${spack_gcc_check} == *"${string_to_look}"* ]]; then
 	echo "GCC-9.2.0 is not installed, so installing"
@@ -162,6 +162,4 @@ execute_and_check "cp -v ${spack_recipes_tar_path} ${spack_base_path}"
 execute_and_check "echo \"Extracting ${spack_recipes_tar_path}...\""
 execute_and_check "tar -xvf ${spack_recipes_tar_path}"
 execute_and_check "${spack_cmd} repo add ${SPACK_ROOT}/var/spack/repos/amd/"
-execute_and_check "echo \"To set spack path, run...\""
-execute_and_check "echo \"source ${SPACK_ROOT}/share/spack/setup-env.sh\""
 # vim: foldmethod=marker foldmarker=#{,#}
