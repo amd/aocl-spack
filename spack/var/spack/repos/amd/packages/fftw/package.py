@@ -37,13 +37,13 @@ class Fftw(AutotoolsPackage):
         'double', default=True,
         description='Produces a double precision version of the library')
     variant(
-        'long_double', default=True,
+        'long_double', default=False,
         description='Produces a long double precision version of the library')
     variant(
         'quad', default=False,
         description='Produces a quad precision version of the library '
                     '(works only with GCC and libquadmath)')
-    variant('openmp', default=False, description="Enable OpenMP support.")
+    variant('openmp', default=True, description="Enable OpenMP support.")
     variant('mpi', default=True, description='Activate MPI support')
     variant(
         'pfft_patches', default=False,
@@ -123,7 +123,7 @@ class Fftw(AutotoolsPackage):
         options = [
             '--prefix={0}'.format(prefix),
             '--enable-shared',
-            '--enable-threads'
+            '--enable-amd-opt'
         ]
         if not self.compiler.f77 or not self.compiler.fc:
             options.append("--disable-fortran")

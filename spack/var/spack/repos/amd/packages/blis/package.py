@@ -53,7 +53,6 @@ class Blis(Package):
         make()
 
     @run_after('build')
-    @on_package_attributes(run_tests=True)
     def check(self):
         make('check')
 
