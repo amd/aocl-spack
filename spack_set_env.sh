@@ -43,10 +43,8 @@ execute_and_check()
         retVal=$?
 
         if [[ $retVal -eq 0 ]]; then
-                echo "********************************************************"
                 echo "Executed : $cmd" >> "${WORKSPACE}/command_executed.txt"
                 echo "Executed : $cmd"
-                echo "********************************************************"
         else
                 echo "########################################################"
                 echo "Execution of command : $cmd - was failed"
@@ -57,6 +55,30 @@ execute_and_check()
 }
 #}
 
+#{Function to execute command, highlight the execution status apart from checking it's return value
+decorate_execute_and_check()
+{
+        cmd="$1"
+        $cmd
+        retVal=$?
+
+        if [[ $retVal -eq 0 ]]; then
+                echo "********************************************************"
+                echo "********************************************************"
+                echo "Executed : $cmd"
+                echo "Executed : $cmd"
+                echo "********************************************************"
+                echo "********************************************************"
+        else
+                echo "########################################################"
+                echo "########################################################"
+                echo "Execution of command : $cmd - was failed"
+                echo "Please check ${WORKSPACE}/command_executed.txt file for commands executed till now"
+                exit 1
+                echo "########################################################"
+                echo "########################################################"
+        fi
+}
 #{prerequisites
 cat << EOF
 
@@ -104,8 +126,8 @@ done
 
 #{ Option processing validation
 if [ -z "${spack_recipes_tar_path}" ]; then
-	execute_and_check "echo \"Path of AOCL Spack recipe tar file is not given\""
-	echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Spack path if it is already installed>"
+	decorate_execute_and_check "echo \"Path of AOCL Spack recipe tar file is not given\""
+	decorate_execute_and_check "echo \"Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Spack path if it is already installed>\""
 	exit 1
 else
 	if [[ "$spack_recipes_tar_path" = /* ]]; then
@@ -117,7 +139,7 @@ fi
 #}
 
 if [ -z "${spack_path}" ]; then
-	execute_and_check "echo \"spack path value is not given, so setting spack workspace from scratch\""
+	decorate_execute_and_check "echo \"spack path value is not given, so setting spack workspace from scratch\""
 	if [ ! -d SPACK_SRC ]; then
 		execute_and_check "mkdir -p SPACK_SRC"
 		execute_and_check "cd SPACK_SRC"
@@ -136,7 +158,8 @@ else
 fi
 
 source ${SPACK_ROOT}/share/spack/setup-env.sh
-spack_cmd="${spack_base_path}/spack/bin/spack"
+#spack_cmd="${spack_base_path}/spack/bin/spack"
+spack_cmd="spack"
 eval "export PATH=${spack_cmd}:$PATH"
 
 execute_and_check "echo \"gcc compiler for AOCL is GCC-9.2.0\""
@@ -162,4 +185,7 @@ execute_and_check "cp -v ${spack_recipes_tar_path} ${spack_base_path}"
 execute_and_check "echo \"Extracting ${spack_recipes_tar_path}...\""
 execute_and_check "tar -xvf ${spack_recipes_tar_path}"
 execute_and_check "${spack_cmd} repo add ${SPACK_ROOT}/var/spack/repos/amd/"
+execute_and_check "${spack_cmd} repo list"
+decorate_execute_and_check "echo \"To add spack to path, run below command from your Shell prompt...\""
+decorate_execute_and_check "echo \"source ${SPACK_ROOT}/share/spack/setup-env.sh\""
 # vim: foldmethod=marker foldmarker=#{,#}

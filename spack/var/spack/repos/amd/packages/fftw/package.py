@@ -37,13 +37,13 @@ class Fftw(AutotoolsPackage):
         'double', default=True,
         description='Produces a double precision version of the library')
     variant(
-        'long_double', default=False,
+        'long_double', default=True,
         description='Produces a long double precision version of the library')
     variant(
         'quad', default=False,
         description='Produces a quad precision version of the library '
                     '(works only with GCC and libquadmath)')
-    variant('openmp', default=True, description="Enable OpenMP support.")
+    variant('openmp', default=False, description="Enable OpenMP support.")
     variant('mpi', default=True, description='Activate MPI support')
     variant(
         'pfft_patches', default=False,
