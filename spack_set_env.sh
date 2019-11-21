@@ -44,7 +44,6 @@ execute_and_check()
 
         if [[ $retVal -eq 0 ]]; then
                 echo "Executed : $cmd" >> "${WORKSPACE}/command_executed.txt"
-                echo "Executed : $cmd"
         else
                 echo "########################################################"
                 echo "Execution of command : $cmd - was failed"
@@ -66,7 +65,6 @@ decorate_execute_and_check()
                 echo "********************************************************"
                 echo "********************************************************"
                 echo "Executed : $cmd"
-                echo "Executed : $cmd"
                 echo "********************************************************"
                 echo "********************************************************"
         else
@@ -79,6 +77,8 @@ decorate_execute_and_check()
                 echo "########################################################"
         fi
 }
+#}
+
 #{prerequisites
 cat << EOF
 
