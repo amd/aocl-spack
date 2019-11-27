@@ -1,163 +1,182 @@
-Spack Overview
+AOCL Spack
 
-1.0 About Spack tool:
-	Spack (https://spack.io/) is a package manager for supercomputers,
-	Linux, and macOS.  It makes installing scientific software easy.
-	With Spack, user can build a package with multiple versions,
-	configurations, platforms, and compilers, and all these builds can
-	coexist on the same machine.
+*******************************************************************************
+About Spack tool:
+*******************************************************************************
+Spack (https://spack.io/) is a package manager for supercomputers, Linux, and 
+macOS.  It makes installing scientific software easy. With Spack, user can 
+build a package with multiple versions,configurations,platforms, and compilers, 
+and all these builds can coexist on the same machine.
 
-Note: Step 5.0 Semi-automation approach will do step 2.0, 3.0 and 4.0 (Except
-      AOCC compiler installation)
 
-2.0 To Install Spack:
-	Please refer https://spack.readthedocs.io/en/latest/getting_started.html
-	link for Spack tool's:
-		. Prerequisites 
-		. Installation
-		. Add Spack to the Shell
-	Note: AOCL packages are tested using Spack release version - v0.12
+*******************************************************************************
+Install AOCL Spack Environment Setup
+*******************************************************************************
+AOCL Spack environment setup can be done through an automated script or via 
+manual setup steps 
 
-3.0 To install Environment Modules:
-	In order to use Spack's generated module files, user need to install
-	environment-modules package, below steps will depicts the procedure.
+Option 1: Install AOCL Spack Enviroment via Automated Script
+-------------------------------------------------------------------------------
+1. Download AOCL Spack tar package from URL https://github.com/amd/blis/releases
+2. Extract aocl_spack_recipe.tar package
+   $ tar -xf aocl_spack_recipe.tar
 
-	$ spack install environment-modules
-	$ spack -i environment-modules
-	$ source init/bash
+   The tar file aocl_spack_recipe.tar, contains below items:
+   . README
+   . spack_set_env.sh 
+   . spack_recipes.tar
 
-4.0 To setup environment required for AOCL packages:
+   Bash script spack_set_env.sh setups the environment required for AOCL package.
 
-	4.1 AOCL Prerequisites
-		Recommended compiler version for AOCL package are AOCC-2.0 and
-		GCC-9.2.0
+   spack_set_env.sh script performs below activities:
+   . Lists Spack prerequisites
+   . Downloads Spack tool (release version - v0.12)
+   . Install and configure environment-modules
+   . Extracts spack deliverable tar package package
+   . Adding repo with namespace "amd"
+   . Print the step for adding Spack to the Shell
 
-		4.1.1 Steps for adding AOCC-2.0 compiler to Spack:
-			. Download AOCC-2.0 binaries from below URL
-			  https://developer.amd.com/amd-aocc/
-			. spack compiler find <AOCC install directory path>
+3. script usage:
+. If Spack tool not present in machine:
+  1) Run the spack environment script
+  $ bash spack_set_env.sh -t <spack_recipes.tar path>
 
-		4.1.2 Steps for adding GCC-9.2.0 compiler to Spack:
-			$ spack install --no-checksum gcc@9.2.0
-			$ gcc_9_2_0=$(spack location --install-dir gcc@9.2.0)
-			$ spack compiler find ${gcc_9_2_0}
+  2) Add spack to system PATH
+  $ source setup-env.sh
 
-	4.2 AOCL tar package
-		aocl_spack_recipe.tar package contains below items:
-			. README
-			. spack_set_env.sh (Not required for manual approach)
-			. spack_recipes.tar
+. If Spack tool already present in machine:
+  1) Run the spack environment script
+  $ bash spack_set_env.sh -t <spack_recipes.tar ptah> -s <Spack install path>
 
-		$ cd ${SPACK_ROOT}
-		Where SPACK_ROOT value is /path/to/spack
-		$ cd ../
-		$ cp -v <Download Path>/spack_recipe_aocl_2.0.0.tar .
-		Extract spack_recipe_aocl_2.0.0.tar tar package 
-		$ tar -xf spack_recipe_aocl_2.0.0.tar
+Option 2: Install AOCL Spack Environment via manual steps
+-------------------------------------------------------------------------------
+1. Install Spack:
 
-		where spack_recipes.tar package contains spack recipe for
-		amd.Blis, amd.FFTW, amd.libFLAME libraries recipe along
-		with spack files required for adding amd namespace
+Please refer https://spack.readthedocs.io/en/latest/getting_started.html link 
+for Spack tool's:
+. Prerequisites 
+. Installation
+. Add Spack to the Shell
 
-	4.3 To add AMD namespace (spack package repositories) to Spack
-		We use a separate package repository for the installing AOCL 
-		packages. Package repositories allow user to separate sets of
-		packages that take precedence over one another. 
+Note: AOCL packages are tested using Spack release version - v0.12
 
-		We will use the amd repo that ships with spack_recipes.tar tar
-		package to avoid breaking the builtin Spack packages.
+2. Install Environment Modules:
 
-		Below command will add amd namespace
-			$ spack repo add ${SPACK_ROOT}/var/spack/repos/amd/
+In order to use Spack's generated module files, user needs to install
+environment-modules package. Following steps shows the procedure.
 
-		Below command will list all the available namespaces in spack
-			$ spack repo list
+$ spack install environment-modules
+$ spack -i environment-modules
+$ source init/bash
 
-5.0 To setup environment required for Spack and AOCL packages by using 
-    spack_set_env.sh script (Semi-automation approach):
+3. Setup environment required for AOCL packages:
 
-	Bash script spack_set_env.sh which is part of spack deliverable tar
-	aocl_spack_recipe.tar, will setup the environment required for AOCL
-	package.
+3.1 AOCL Prerequisites
+Recommended compiler version for AOCL package are AOCC-2.0 and GCC-9.2.0
 
-	spack_set_env.sh  script will perform below said activities:
-		. Lists Spack prerequisites 
-		. Downloads Spack tool (release version - v0.12)
-		. Install and configure environment-modules
-		. Extracts spack deliverable tar package package
-		. Adding repo with namespace "amd"
-		. Print the step for adding Spack to the Shell
+3.1.1 Steps for adding AOCC-2.0 compiler to Spack:
+. Download AOCC-2.0 binaries from URL https://developer.amd.com/amd-aocc/
+. spack compiler find <AOCC install directory path>
 
-	script usage:
-		. If no Spack tool present in machine:
-		$ spack_set_env.sh -t <Path of spack_recipes.tar tar package>
+3.1.2 Steps for adding GCC-9.2.0 compiler to Spack:
+$ spack install --no-checksum gcc@9.2.0
+$ gcc_9_2_0=$(spack location --install-dir gcc@9.2.0)
+$ spack compiler find ${gcc_9_2_0}
 
-		. If Spack tool directory is already present in machine:
-		$ spack_set_env.sh -t <Path of spack_recipes.tar tar package>
-		  -s <Path of Spack path if it is already installed>
+3.2 AOCL tar package
+. Download AOCL Spack tar package from URL https://github.com/amd/blis/releases
+. Extract aocl_spack_recipe.tar package 
+  $ tar -xf aocl_spack_recipe.tar
 
-6.0 To Install AOCL packages:
+The tar file aocl_spack_recipe.tar, contains below items:
+. README
+. spack_set_env.sh (Not required for manual approach)
+. spack_recipes.tar
 
-	AOCL package, which consists of amd.Blis, amd.libFlame and amd.fftw can
-	be installed using below procedure as shown for Blis package:
+$ cd ${SPACK_ROOT}       
+  Where SPACK_ROOT is Spack install directory
+$ cd ../
+$ cp -v <AOCL Spack download Path>/spack_recipes.tar .
 
-	6.1 amd.blis package (same process for amd.libFlamd and amd.fftw):
-		Below command will provide blis package info and
-		supported versions
-			$ spack info amd.blis
+Extract spack_recipes.tar package 
+$ tar -xf spack_recipes.tar
 
-		To install amd blis latest version
-			$ spack install amd.blis
+spack_recipes.tar package contains spack recipes for AMD Blis, AMD FFTW, 
+AMD libFLAME libraries along with spack files required for adding 'amd' namespace
 
-		To verify contents installed contents
-			$ spack spec amd.blis
+3.3 Add 'amd' namespace (spack package repositories) to Spack:
+We use a separate package repository for installing AOCL packages. Package 
+repositories allows user to separate sets of packages that take precedence over 
+one another. 
+
+We use the 'amd' repo that ships with spack_recipes.tar package to avoid 
+breaking the builtin Spack packages.
+
+Add amd namespace
+$ spack repo add ${SPACK_ROOT}/var/spack/repos/amd/
+
+
+*******************************************************************************
+Install AOCL packages
+*******************************************************************************
+AOCL package, which consists of amd.Blis, amd.libFlame and amd.fftw can	be 
+installed using below procedure as shown for Blis package:
+
+Install AMD BLIS package (Similar procedure for AMD libFlame and AMD FFTW):
+-------------------------------------------------------------------------------
+Below command will provide blis package info and supported versions
+$ spack info amd.blis
+
+Install amd blis latest version
+$ spack install amd.blis
+
+Verify contents installed contents
+$ spack spec amd.blis
  
-		Command to go blis install-directory
-			$ spack cd -i amd.blis
+Command to go to blis install-directory
+$ spack cd -i amd.blis
  
-		To install other versions of amd blis package use @
-		(supported versions of blis are 2.0, 1.3, 1.2 and 1.0):
-			$ spack install -v amd.blis@1.3 
+To install other versions of amd blis package use @
+(supported versions of blis are 2.0, 1.3, 1.2 and 1.0):
+$ spack install -v amd.blis@1.3 
 
-		To build and install Blis which will support multithreading
-		using AOCC compiler:
-			$ spack install amd.blis@1.2 threads=openmp %clang@8.0.0
+Build and install Blis 1.2 with openmp multithreading using AOCC compiler:
+$ spack install amd.blis@1.2 threads=openmp %clang@8.0.0
+
+Build and install Blis 1.0 with pthread multithreading using GCC compiler:
+$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
+
+*******************************************************************************
+Other Useful Spack Commands
+*******************************************************************************
+List all the available namespaces in spack
+$ spack repo list
+
+To list all versions of blis along with "hash", "version","arch","compiler", 
+"namespace" and "parameters" value:
+$ spack find -lvN amd.blis
  
+To use spack installed packages:
+$ spack load <package> 
+or
+export the path of installed package
 
-		For multithreading using AOCC compiler:
-			$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
+To uninstall Blis package:
+To uninstall Blis default package
+$ spack uninstall amd.blis
+
+To uninstall Blis based out of different version:
+$ spack uninstall amd.blis@2.0
+
+To uninstall Blis based out of hash values:
+$ spack uninstall amd.blis/43reafx
+
+To uninstall Blis based out of different namespace:
+$ spack uninstall builtin.blis@0.6.0
+
+To switch to builtin namespace:
+$ spack repo remove amd
+$ spack repo add </path/to/spack>/var/spack/repos/builtin
  
-
-		To list all versions of blis along with "hash", "version",
-		"arch", "compiler", "namespace" and "parameters" value:
-			$ spack find -lvN amd.blis
- 
-
-		To use spack installed packages:
-			To use, user can either call spack load <package> or
-			export the path of installed package
-
- 
-
-		To uninstall Blis package:
-			To uninstall Blis default package
-				$ spack uninstall amd.blis
-
-			To uninstall Blis based out of different version:
-				$ spack uninstall amd.blis@2.0
-
-			To uninstall Blis based out of hash values:
-				$ spack uninstall amd.blis/43reafx
-
-			To uninstall Blis based out of different namespace:
-				$ spack uninstall builtin.blis@0.6.0
-
-
-7.0 To switch to builtin namespace:
-	To switch to builtin namespace 
-		$ spack repo remove amd
-		$ spack repo add </path/to/spack>/var/spack/repos/builtin
- 
-
-Note: AOCL packages based out of AMD namespaces and community libraries can
-      exist together under same spack directory.
+Note: AOCL packages based out of 'amd' namespaces and community libraries can
+exist together under same spack directory.
