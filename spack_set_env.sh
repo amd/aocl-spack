@@ -46,7 +46,7 @@ execute_and_check()
                 echo "Executed : $cmd" >> "${WORKSPACE}/command_executed.txt"
         else
                 echo "########################################################"
-                echo "Execution of command : $cmd - was failed"
+                echo "Execution of command : $cmd - failed"
                 echo "Please check ${WORKSPACE}/command_executed.txt file for commands executed till now"
                 exit 1
                 echo "########################################################"
@@ -70,7 +70,7 @@ decorate_execute_and_check()
         else
                 echo "########################################################"
                 echo "########################################################"
-                echo "Execution of command : $cmd - was failed"
+                echo "Execution of command : $cmd - failed"
                 echo "Please check ${WORKSPACE}/command_executed.txt file for commands executed till now"
                 exit 1
                 echo "########################################################"
@@ -122,6 +122,16 @@ while getopts :t:s:a:c: opt; do
     ;;
   esac
 done
+#}
+
+
+#{ Check if spack is already installed or not
+if [ -d "$HOME/.amd_spack" ]
+then
+	echo "Spack instance with AMD deliverables are already present under below path"
+	cat "$HOME/.amd_spack/path"
+	exit 0;
+fi
 #}
 
 #{ Option processing validation
@@ -186,6 +196,8 @@ execute_and_check "echo \"Extracting ${spack_recipes_tar_path}...\""
 execute_and_check "tar -xvf ${spack_recipes_tar_path}"
 execute_and_check "${spack_cmd} repo add ${SPACK_ROOT}/var/spack/repos/amd/"
 execute_and_check "${spack_cmd} repo list"
-decorate_execute_and_check "echo \"To add spack to path, run below command from your Shell prompt...\""
+echo "To add spack to path, run below command from your Shell prompt..."
 decorate_execute_and_check "echo \"source ${SPACK_ROOT}/share/spack/setup-env.sh\""
+execute_and_check "mkdir -p $HOME/.amd_spack"
+echo "Spack is installed under following path - \"${spack_base_path}\" " > "$HOME/.amd_spack/path"
 # vim: foldmethod=marker foldmarker=#{,#}
