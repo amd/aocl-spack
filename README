@@ -161,6 +161,10 @@ Build and install Blis 1.2 with openmp multithreading using AOCC compiler:
 Build and install Blis 1.0 with pthread multithreading using GCC compiler:
 	$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
 
+Note: For AMD FFTW package is delivered for single and double precision.
+Default installation results in double precision, for single precision,
+use below command:
+	$ spack install +single amd.fftw
 *******************************************************************************
 Other Useful Spack Commands
 *******************************************************************************
