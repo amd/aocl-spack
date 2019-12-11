@@ -40,14 +40,14 @@ Option 1: Install AOCL Spack Enviroment via Automated Script
 3. script usage:
 	. If Spack tool not present in machine:
 	  1) Run the spack environment script
-	  $ bash spack_set_env.sh -t <spack_recipes.tar path>
+	  $ bash spack_set_env.sh -t spack_recipes.tar
 
 	  2) Add spack to system PATH
-	  $ source setup-env.sh
+	  $ source <Current dir>/SPACK_SRC/spack/share/spack/setup-env.sh
 
 	. If Spack tool already present in machine:
 	  1) Run the spack environment script
-	  $ bash spack_set_env.sh -t <spack_recipes.tar path> -s
+	  $ bash spack_set_env.sh -t spack_recipes.tar -s
 	    <Spack install path>
 
 Option 2: Install AOCL Spack Environment via manual steps
@@ -161,9 +161,10 @@ Build and install Blis 1.2 with openmp multithreading using AOCC compiler:
 Build and install Blis 1.0 with pthread multithreading using GCC compiler:
 	$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
 
-Note: For AMD FFTW package is delivered for single and double precision.
-Default installation results in double precision, for single precision,
-use below command:
+Note: AMD FFTW package is delivered for single and double precision.
+Default installation creats double precision binaries.
+
+For single precision, use below command:
 	$ spack install +single amd.fftw
 *******************************************************************************
 Other Useful Spack Commands
