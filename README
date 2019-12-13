@@ -165,7 +165,7 @@ Note: AMD FFTW package is delivered for single and double precision.
 Default installation creats double precision binaries.
 
 For single precision, use below command:
-	$ spack install +single amd.fftw
+	$ spack install amd.fftw +single
 *******************************************************************************
 Other Useful Spack Commands
 *******************************************************************************
