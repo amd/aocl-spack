@@ -12,8 +12,8 @@ and all these builds can coexist on the same machine.
 *******************************************************************************
 Install AOCL Spack Environment Setup
 *******************************************************************************
-AOCL Spack environment setup can be done through an automated script or via 
-manual setup steps 
+AOCL Spack environment setup can be done through an automated script
+(spack_set_env.sh) or via manual setup steps
 
 Option 1: Install AOCL Spack Enviroment via Automated Script
 -------------------------------------------------------------------------------
@@ -33,9 +33,9 @@ Option 1: Install AOCL Spack Enviroment via Automated Script
 	. Lists Spack prerequisites
 	. Downloads Spack tool (release version - v0.12)
 	. Install and configure environment-modules
-	. Extracts spack deliverable tar package package
+	. Extracts AMD spack deliverable tar package (spack_recipes.tar)
 	. Adding repo with namespace "amd"
-	. Print the step for adding Spack to the Shell
+	. Print the step for adding Spack tool path to the Shell environment
 
 3. script usage:
 	. If Spack tool not present in machine:
@@ -74,12 +74,13 @@ environment-modules package. Following steps shows the procedure.
 3. Setup environment required for AOCL packages:
 
 3.1 AOCL Prerequisites
-Recommended compiler version for AOCL package are AOCC-2.0 and GCC-9.2.0
+Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0
 
-3.1.1 Steps for adding AOCC-2.0 compiler to Spack:
-	. Download AOCC-2.0 binaries from
+3.1.1 Steps for adding AOCC-2.1 compiler to Spack:
+	. Download AOCC-2.1 binaries from
 	  URL - https://developer.amd.com/amd-aocc/
-	. spack compiler find <AOCC install directory path>
+	. tar -xf aocc-compiler-2.1.0.tar
+	. spack compiler find <Install directory path i.e., aocc-compiler-2.1.0>
 
 3.1.2 Steps for adding GCC-9.2.0 compiler to Spack:
 	$ spack install --no-checksum gcc@9.2.0
