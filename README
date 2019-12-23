@@ -74,7 +74,8 @@ environment-modules package. Following steps shows the procedure.
 3. Setup environment required for AOCL packages:
 
 3.1 AOCL Prerequisites
-Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0
+Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0(For
+SUSE, use default GCC version)
 
 3.1.1 Steps for adding AOCC-2.1 compiler to Spack:
 	. Download AOCC-2.1 binaries from

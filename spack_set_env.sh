@@ -172,15 +172,18 @@ source ${SPACK_ROOT}/share/spack/setup-env.sh
 spack_cmd="spack"
 eval "export PATH=${spack_cmd}:$PATH"
 
-execute_and_check "echo \"gcc compiler for AOCL is GCC-9.2.0\""
-execute_and_check "echo \"check whether GCC-9.2.0 is installed or not\""
-spack_gcc_check=$(${spack_cmd} find gcc@9.2.0)
-string_to_look="No package matches the query: gcc@9.2.0"
-if [[ ${spack_gcc_check} == *"${string_to_look}"* ]]; then
-	echo "GCC-9.2.0 is not installed, so installing"
-	execute_and_check "${spack_cmd} install --no-checksum gcc@9.2.0"
-	gcc_9_2_0=$(${spack_cmd} location --install-dir gcc@9.2.0)
-	execute_and_check "${spack_cmd} compiler find ${gcc_9_2_0}"
+os_name="$(cat /etc/os-release | grep -w NAME | awk -F'=' '{print $2}')"
+if [ "$os_name" != "\"SLES\"" ]; then
+	execute_and_check "echo \"gcc compiler for AOCL for OS other than SLES is GCC-9.2.0\""
+	execute_and_check "echo \"check whether GCC-9.2.0 is installed or not\""
+	spack_gcc_check=$(${spack_cmd} find gcc@9.2.0)
+	string_to_look="No package matches the query: gcc@9.2.0"
+	if [[ ${spack_gcc_check} == *"${string_to_look}"* ]]; then
+		echo "GCC-9.2.0 is not installed, so installing"
+		execute_and_check "${spack_cmd} install --no-checksum gcc@9.2.0"
+		gcc_9_2_0=$(${spack_cmd} location --install-dir gcc@9.2.0)
+		execute_and_check "${spack_cmd} compiler find ${gcc_9_2_0}"
+	fi
 fi
 
 execute_and_check "echo \"For Spack load <product> feature, environment-modules are required, so installing...\""
@@ -199,5 +202,6 @@ execute_and_check "${spack_cmd} repo list"
 echo "To add spack to path, run below command from your Shell prompt..."
 decorate_execute_and_check "echo \"source ${SPACK_ROOT}/share/spack/setup-env.sh\""
 execute_and_check "mkdir -p $HOME/.amd_spack"
-echo "Spack is installed under following path - \"${spack_base_path}\" " > "$HOME/.amd_spack/path"
+echo "Spack tool with AMD's recipe is already installed under following path - \"${spack_base_path}\" " > "$HOME/.amd_spack/path"
+echo "If you want new instance, than delete the above path along with it's reference file - $HOME/.amd_spack/path"
 # vim: foldmethod=marker foldmarker=#{,#}
