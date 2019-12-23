@@ -172,14 +172,26 @@ source ${SPACK_ROOT}/share/spack/setup-env.sh
 spack_cmd="spack"
 eval "export PATH=${spack_cmd}:$PATH"
 
-os_name="$(cat /etc/os-release | grep -w NAME | awk -F'=' '{print $2}')"
-if [ "$os_name" != "\"SLES\"" ]; then
-	execute_and_check "echo \"gcc compiler for AOCL for OS other than SLES is GCC-9.2.0\""
-	execute_and_check "echo \"check whether GCC-9.2.0 is installed or not\""
-	spack_gcc_check=$(${spack_cmd} find gcc@9.2.0)
-	string_to_look="No package matches the query: gcc@9.2.0"
-	if [[ ${spack_gcc_check} == *"${string_to_look}"* ]]; then
-		echo "GCC-9.2.0 is not installed, so installing"
+execute_and_check "echo \"gcc compiler for AOCL is GCC-9 or above\""
+execute_and_check "echo \"check whether GCC-9 is installed or not\""
+
+spack_gcc_check=$(${spack_cmd} compilers | grep gcc@9.*)
+if [ "$spack_gcc_check" == "9.*" ]; then
+	echo "$spack_gcc_check is installed, no action required"
+else
+	echo "GCC-9 is not part of spack compilers, so need to add"
+
+	os_name="$(cat /etc/os-release | grep -w NAME | awk -F'=' '{print $2}')"
+	if [ "$os_name" == "\"SLES\"" ]; then
+		echo " Install gcc9 using zypper install and update ~/.spack/<platform>/compilers.yaml file for GCC-9 entry:
+			spack compiler find cc: /usr/bin/gcc
+
+			update g++, gfortran values of GCC-9 compiler with below values, under ~/.spack/<platform>/compilers.yaml file:
+                        cxx: /usr/bin/g++-9
+                        f77: /usr/bin/gfortran-9
+                        fc: /usr/bin/gfortran-9
+		"
+	else
 		execute_and_check "${spack_cmd} install --no-checksum gcc@9.2.0"
 		gcc_9_2_0=$(${spack_cmd} location --install-dir gcc@9.2.0)
 		execute_and_check "${spack_cmd} compiler find ${gcc_9_2_0}"

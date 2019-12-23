@@ -74,8 +74,7 @@ environment-modules package. Following steps shows the procedure.
 3. Setup environment required for AOCL packages:
 
 3.1 AOCL Prerequisites
-Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0(For
-SUSE, use default GCC version)
+Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0
 
 3.1.1 Steps for adding AOCC-2.1 compiler to Spack:
 	. Download AOCC-2.1 binaries from
@@ -108,8 +107,9 @@ The tar file aocl_spack_recipe.tar, contains below items:
 Extract spack_recipes.tar package 
 	$ tar -xf spack_recipes.tar
 
-spack_recipes.tar package contains spack recipes for AMD Blis, AMD FFTW, 
-AMD libFLAME libraries along with spack files required for adding 'amd' namespace
+spack_recipes.tar package contains spack recipes for AMD Blis, AMD FFTW,
+AMD libFLAME libraries along with spack files required for adding 'amd'
+namespace
 
 3.3 Add 'amd' namespace (spack package repositories) to Spack:
 We use a separate package repository for installing AOCL packages. Package 
@@ -158,7 +158,7 @@ To install other versions of amd blis package use @
 	$ spack install -v amd.blis@1.3
 
 Build and install Blis 1.2 with openmp multithreading using AOCC compiler:
-	$ spack install amd.blis@1.2 threads=openmp %clang@8.0.0
+	$ spack install amd.blis@1.2 threads=openmp %clang@9.0.0
 
 Build and install Blis 1.0 with pthread multithreading using GCC compiler:
 	$ spack install amd.blis@1.0 threads=pthreads %gcc@9.2.0
