@@ -191,6 +191,7 @@ else
                         f77: /usr/bin/gfortran-9
                         fc: /usr/bin/gfortran-9
 		"
+		exit 0
 	else
 		execute_and_check "${spack_cmd} install --no-checksum gcc@9.2.0"
 		gcc_9_2_0=$(${spack_cmd} location --install-dir gcc@9.2.0)
@@ -214,6 +215,6 @@ execute_and_check "${spack_cmd} repo list"
 echo "To add spack to path, run below command from your Shell prompt..."
 decorate_execute_and_check "echo \"source ${SPACK_ROOT}/share/spack/setup-env.sh\""
 execute_and_check "mkdir -p $HOME/.amd_spack"
-echo "Spack tool with AMD's recipe is already installed under following path - \"${spack_base_path}\" " > "$HOME/.amd_spack/path"
-echo "If you want new instance, than delete the above path along with it's reference file - $HOME/.amd_spack/path"
+echo "Spack tool with AMD\'s recipe is already installed under following path - \"${spack_base_path}\" " > "$HOME/.amd_spack/path"
+echo "If you want new instance, than delete the above path along with it\'s reference file - $HOME/.amd_spack/path"
 # vim: foldmethod=marker foldmarker=#{,#}
