@@ -84,8 +84,10 @@ cat << EOF
 
 Spack prerequisites are:
 
-			1) Python 2 (2.6 or 2.7) or 3 (3.5 - 3.8) to run Spack
+			1) Python 2 (2.6 or 2.7) or 3 (3.5 - 3.8)
+				a) Python should be in standard path for Spack to run
 			2) A C/C++ compiler for building
+				a) Minimum version of GCC for AOCL is 9+
 			3) The make executable for building
 			4) The git and curl commands for fetching
 			5) If using the gpg subcommand, gnupg2 is required
@@ -116,20 +118,31 @@ while getopts :t:s:a:c: opt; do
     h)
       help="${OPTARG}"
       echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Path of Spack path if it is already installed>"
+	exit 0
     ;;
     *)
       echo "Usage: spack_set_env.sh -t <Path of spack_recipes.tar tar package> -s <Spack path if it is already installed>"
+	exit 1
     ;;
   esac
 done
 #}
 
+python2=$(python --version)
+python3=$(python3 --version)
+
+if [ -z "$python2" -o -z "$python3" ]
+then
+	decorate_execute_and_check "echo \"Either Python is not installed or not in standard path\""
+	exit 1;
+fi
 
 #{ Check if spack is already installed or not
-if [ -d "$HOME/.amd_spack" ]
+if [ -d "$HOME/.amd_spack" -a -z "$spack_path" ]
 then
-	echo "Spack instance with AMD deliverables are already present under below path"
+	decorate_execute_and_check "echo \"Spack instance with AMD deliverables are already present under below path\""
 	cat "$HOME/.amd_spack/path"
+	decorate_execute_and_check "echo \"If you want new Spack instance, then delete the above path and $HOME/.amd_spack directory\""
 	exit 0;
 fi
 #}
@@ -176,8 +189,13 @@ execute_and_check "echo \"gcc compiler for AOCL is GCC-9 or above\""
 execute_and_check "echo \"check whether GCC-9 is installed or not\""
 
 spack_gcc_check=$(${spack_cmd} compilers | grep gcc@9.*)
+system_gcc=$(gcc -dumpversion | cut -f1 -d.)
 if [ "$spack_gcc_check" == "9.*" ]; then
 	echo "$spack_gcc_check is installed, no action required"
+elif [ "$system_gcc" == "9" ]; then
+	echo "System has already GCC-9+ version, need to add to Spack DB"
+	echo "spack compiler find GCC install directory path"
+	exit 0;
 else
 	echo "GCC-9 is not part of spack compilers, so need to add"
 
