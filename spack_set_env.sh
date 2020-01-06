@@ -131,7 +131,7 @@ done
 python2=$(python --version)
 python3=$(python3 --version)
 
-if [ -z "$python2" -o -z "$python3" ]
+if [ -z "$python2" ] && [ -z "$python3" ]
 then
 	decorate_execute_and_check "echo \"Either Python is not installed or not in standard path\""
 	exit 1;
