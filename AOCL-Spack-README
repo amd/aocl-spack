@@ -17,7 +17,7 @@ AOCL Spack environment setup can be done through an automated script
 
 Option 1: Install AOCL Spack Enviroment via Automated Script
 -------------------------------------------------------------------------------
-1. Download AOCL Spack tar package from URL https://github.com/amd/blis/releases
+1. Download AOCL Spack tar package from URL https://github.com/amd/aocl-spack/releases
 2. Extract aocl_spack_recipe.tar package
    $ tar -xf aocl_spack_recipe.tar
 
@@ -89,7 +89,7 @@ Recommended compiler version for AOCL package are AOCC-2.1 and GCC-9.2.0
 
 3.2 AOCL tar package
 	. Download AOCL Spack tar package from
-	  URL - https://github.com/amd/blis/releases
+	  URL - https://github.com/amd/aocl-spack/releases
 
 	. Extract aocl_spack_recipe.tar package
 	  $ tar -xf aocl_spack_recipe.tar
