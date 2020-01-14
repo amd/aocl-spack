@@ -16,9 +16,10 @@ class Blis(Package):
     AMD EPYC processor family by AMD and others"""
 
     homepage = "https://github.com/amd/blis"
-    url      = "https://github.com/amd/blis/archive/2.0.tar.gz"
+    url      = "https://github.com/amd/blis/archive/2.1.tar.gz"
     git      = "https://github.com/amd/blis.git"
 
+    version('2.1', tag='2.1')
     version('2.0', tag='2.0')
     version('1.3', tag='1.3')
     version('1.2', tag='1.2')

@@ -20,9 +20,10 @@ class Fftw(AutotoolsPackage):
     for AMD CPUs."""
 
     homepage = "https://github.com/amd/amd-fftw"
-    url      = "https://github.com/amd/amd-fftw/archive/2.0.tar.gz"
+    url      = "https://github.com/amd/amd-fftw/archive/2.1.tar.gz"
     git      = "https://github.com/amd/amd-fftw.git"
 
+    version('2.1', tag='2.1')
     version('2.0', tag='2.0')
 
     variant('single', description='single precision')
@@ -35,7 +36,7 @@ class Fftw(AutotoolsPackage):
 
     phases = ['configure', 'build', 'install']
 
-    conflicts('%gcc@7:7.2', when="@2.0")
+    conflicts('%gcc@7:7.2', when="@2.1")
     def configure(self, spec, prefix):
 	config_args = []
         config_args = [

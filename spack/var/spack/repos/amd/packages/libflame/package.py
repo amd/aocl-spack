@@ -26,9 +26,10 @@ class Libflame(AutotoolsPackage):
     high performing LAPACK functionalities on AMD platform."""
 
     homepage = "https://github.com/amd/libflame"
-    url      = "https://github.com/amd/libflame/archive/2.0.tar.gz"
+    url      = "https://github.com/amd/libflame/archive/2.1.tar.gz"
     git      = "https://github.com/amd/libflame.git"
 
+    version('2.1', tag='2.1')
     version('2.0', tag='2.0')
     version('1.3', tag='1.3')
     version('1.0', tag='1.0')
