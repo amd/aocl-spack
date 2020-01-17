@@ -1,5 +1,0 @@
-commit d62dc366ef90681fac37895e614a41d719675c44 (HEAD -> releases/v0.12, origin/releases/v0.12)
-Author: Todd Gamblin <tgamblin@llnl.gov>
-Date:   Sun Jan 13 15:28:07 2019 -0800
-
-    bugfix: bring in .travis.yml from develop
