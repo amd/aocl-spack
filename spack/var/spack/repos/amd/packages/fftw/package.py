@@ -1,8 +1,8 @@
 #
-# Copyright (c) 2019 Advanced Micro Devices, Inc. 
+# Copyright (c) 2019 Advanced Micro Devices, Inc.
 # All rights reserved.
 #
- 
+
 from spack import *
 
 import llnl.util.lang
@@ -10,7 +10,7 @@ import llnl.util.lang
 import os
 
 
-class Fftw(AutotoolsPackage):
+class Amdfftw(AutotoolsPackage):
     """FFTW is a comprehensive collection of fast C routines for
     computing the Discrete Fourier Transform (DFT) and various special
     cases thereof. It is an open-source implementation of the Fast
@@ -22,11 +22,13 @@ class Fftw(AutotoolsPackage):
     homepage = "https://github.com/amd/amd-fftw"
     url      = "https://github.com/amd/amd-fftw/archive/2.1.tar.gz"
     git      = "https://github.com/amd/amd-fftw.git"
+    list_url = homepage
 
     version('2.1', tag='2.1')
     version('2.0', tag='2.0')
 
-    variant('single', description='single precision')
+    variant('single', default=True, description='single precision')
+    variant('double', default-False, description='double precision')
 
     depends_on('mpi')
     depends_on('automake')
@@ -38,15 +40,14 @@ class Fftw(AutotoolsPackage):
 
     conflicts('%gcc@7:7.2', when="@2.1")
     def configure(self, spec, prefix):
-	config_args = []
         config_args = [
-	    '--enable-sse2',
-	    '--enable-avx',
-	    '--enable-avx2',
-	    '--enable-mpi',
-	    '--enable-openmp',
-	    '--enable-shared',
-	    '--enable-amd-opt'
+            '--enable-sse2',
+            '--enable-avx',
+            '--enable-avx2',
+            '--enable-mpi',
+            '--enable-openmp',
+            '--enable-shared',
+            '--enable-amd-opt'
         ]
 
         if '+single' in self.spec:
