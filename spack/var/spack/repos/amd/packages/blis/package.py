@@ -35,13 +35,13 @@ class Blis(Package):
     phases = ['configure', 'build', 'install']
 
     def configure(self, spec, prefix):
-	config_args = []
+        config_args = []
 
-	config_args.append("--enable-threading=" +
+        config_args.append("--enable-threading=" +
                            spec.variants['threads'].value)
 
-	config_args.append("--enable-cblas")
-	config_args.append("auto")
+        config_args.append("--enable-cblas")
+        config_args.append("auto")
         configure("--prefix=" + prefix,
                   *config_args)
 
