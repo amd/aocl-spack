@@ -26,7 +26,7 @@ class Fftw(AutotoolsPackage):
     version('2.1', tag='2.1')
     version('2.0', tag='2.0')
 
-    variant('single', description='single precision')
+    variant('single', default=False, description='single precision')
 
     depends_on('mpi')
     depends_on('automake')
@@ -38,15 +38,15 @@ class Fftw(AutotoolsPackage):
 
     conflicts('%gcc@7:7.2', when="@2.1")
     def configure(self, spec, prefix):
-	config_args = []
+        config_args = []
         config_args = [
-	    '--enable-sse2',
-	    '--enable-avx',
-	    '--enable-avx2',
-	    '--enable-mpi',
-	    '--enable-openmp',
-	    '--enable-shared',
-	    '--enable-amd-opt'
+            '--enable-sse2',
+            '--enable-avx',
+            '--enable-avx2',
+            '--enable-mpi',
+            '--enable-openmp',
+            '--enable-shared',
+            '--enable-amd-opt'
         ]
 
         if '+single' in self.spec:
